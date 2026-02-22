@@ -68,24 +68,24 @@ form.addEventListener("submit", async function(e){
   if (!check()) return;
 
   const name = document.getElementById("full-name").value.trim();
-  const studentId = document.getElementById("student-id").value.trim();
+  const student_id = document.getElementById("student-id").value.trim();
   const email = document.getElementById("email").value.trim();
   const password = pw.value;
 
-  if (!name || !studentId || !email) {
+  if (!name || !student_id || !email) {
     alert("모든 항목을 입력해주세요.");
     return;
   }
 
   try {
-    const response = await fetch("https://너의백엔드주소/api/v1/auth/signup", {
+    const response = await fetch("https://backend-production-5853.up.railway.app/api/v1/users/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         name,
-        studentId,
+        student_id,
         email,
         password,
       }),
@@ -99,7 +99,7 @@ form.addEventListener("submit", async function(e){
     }
 
     localStorage.setItem("pendingEmail", email);
-    window.location.href = "../verify/index.html";
+    window.location.href = "/login";
 
   } catch (error) {
     console.error(error);
