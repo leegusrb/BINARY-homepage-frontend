@@ -9,14 +9,14 @@ body {
     font-family: "Inter", "Pretendard", sans-serif;
 }
 
+.font-mono {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
 h1,
 h2,
 h3,
 h4,
 .font-display {
     font-family: "Inter", "Space Grotesk", "Pretendard", sans-serif;
-}
-
-.font-mono {
-    font-family: "Inter", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }

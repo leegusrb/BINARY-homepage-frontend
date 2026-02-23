@@ -13,7 +13,7 @@ window.tailwind.config = {
                 "display": ["Inter", "Space Grotesk", "Pretendard", "sans-serif"],
                 "body": ["Inter", "Pretendard", "sans-serif"],
                 "sans": ["Inter", "Pretendard", "sans-serif"],
-                "mono": ["Inter", "JetBrains Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"]
+                "mono": ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"]
             },
             borderRadius: {
                 "DEFAULT": "0.25rem",
