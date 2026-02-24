@@ -24,8 +24,8 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     const data = await res.json();
     console.log("로그인 응답:", data);
 
-    // 예: { token: "..." }
-    localStorage.setItem("token", data.token);
+    // FastAPI의 OAuth2 기반 응답은 보통 access_token 키로 토큰을 반환합니다.
+    localStorage.setItem("token", data.access_token);
 
     alert("로그인 성공!");
     window.location.href = "/";
