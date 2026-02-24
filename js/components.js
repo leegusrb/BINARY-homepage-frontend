@@ -45,9 +45,9 @@ class AppHeader extends HTMLElement {
     if (token) {
       // 로그인 상태일 때 (마이페이지 및 로그아웃 버튼)
       authContainer.innerHTML = `
-        <button class="flex items-center gap-2 px-6 py-2.5 rounded-full bg-primary hover:bg-primary-hover text-white text-sm font-semibold transition-all shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] hover:shadow-[0_6px_20px_rgba(16,185,129,0.23)] hover:-translate-y-0.5 font-body tracking-wide">
+        <a href="/mypage" class="flex items-center justify-center px-6 py-2 rounded-full bg-primary hover:bg-primary-hover text-white text-sm font-bold transition-all shadow-md hover:shadow-lg font-body">
           <span>MYPAGE</span>
-        </button>
+        </a>
         <button onclick="localStorage.removeItem('token'); location.reload();"
           class="flex items-center justify-center px-3 py-2 rounded-lg text-gray-500 hover:text-black text-sm font-bold transition-all font-body md:flex hidden">
           Logout

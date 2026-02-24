@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html class="light" lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>BINARY - 프로필 편집</title>
+
+  <link rel="stylesheet" href="/css/global.css" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="/js/tailwind-config.js"></script>
+  <script src="/js/components.js" defer></script>
+
+  <style>
+    body {
+      font-family: "Space Grotesk", sans-serif;
+      background-color: #fcfcfc;
+    }
+
+    .glass-card {
+      background: #ffffff;
+      border: 1px solid #f1f5f9;
+    }
+  </style>
+</head>
+
+<body class="text-slate-900 min-h-screen flex flex-col font-display bg-slate-50">
+  <app-header></app-header>
+  <main class="flex-1 w-full max-w-[800px] mx-auto px-8 py-16 flex flex-col items-center">
+    <div class="glass-card shadow-soft rounded-3xl w-full p-10 md:p-12 animate-fade-in-up">
+      <div class="flex items-center gap-4 mb-10 border-b border-slate-100 pb-6">
+        <a class="p-2 -ml-2 rounded-full hover:bg-slate-50 text-slate-400 hover:text-slate-900 transition-colors"
+          href="javascript:history.back()">
+          <span class="material-symbols-outlined block">arrow_back</span>
+        </a>
+        <div>
+          <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Edit Profile</h1>
+          <p class="text-slate-500 mt-1">Update your personal information and security settings.</p>
+        </div>
+      </div>
+      <form id="edit-profile-form" class="space-y-8">
+        <div class="space-y-6">
+          <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">person</span>
+            Personal Information
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="col-span-1">
+              <label class="block text-sm font-medium text-slate-700 mb-2" for="name">이름</label>
+              <input
+                class="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-primary focus:ring-primary focus:ring-1 transition-shadow duration-200 placeholder:text-slate-400 outline-none"
+                id="name" name="name" placeholder="Enter your full name" type="text" />
+            </div>
+            <div class="col-span-1">
+              <label class="block text-sm font-medium text-slate-700 mb-2" for="studentId">학번</label>
+              <input
+                class="w-full rounded-xl border-slate-200 bg-slate-100 px-4 py-3 text-slate-500 cursor-not-allowed select-none"
+                disabled="" id="studentId" name="studentId" readonly="" type="text" />
+              <p class="text-xs text-slate-400 mt-1.5 ml-1">학번 변경은 운영진에게 문의해주세요.</p>
+            </div>
+            <div class="col-span-1 md:col-span-2">
+              <label class="block text-sm font-medium text-slate-700 mb-2" for="email">이메일</label>
+              <input
+                class="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-primary focus:ring-primary focus:ring-1 transition-shadow duration-200 placeholder:text-slate-400 outline-none"
+                id="email" name="email" placeholder="yourname@example.com" type="email" />
+            </div>
+            <div class="col-span-1 md:col-span-2">
+              <label class="block text-sm font-medium text-slate-700 mb-2" for="bio">한 줄 소개</label>
+              <input
+                class="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-primary focus:ring-primary focus:ring-1 transition-shadow duration-200 placeholder:text-slate-400 outline-none"
+                id="bio" name="bio" placeholder="Briefly describe yourself" type="text" />
+            </div>
+            <div class="col-span-1 md:col-span-2">
+              <label class="block text-sm font-medium text-slate-700 mb-2" for="baekjoonId">백준 ID</label>
+              <div class="relative flex items-center gap-3">
+                <div class="relative w-full">
+                  <input
+                    class="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-primary focus:ring-primary focus:ring-1 transition-shadow duration-200 placeholder:text-slate-400 outline-none pr-12"
+                    id="baekjoonId" name="baekjoonId" placeholder="Your BOJ handle" type="text" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="h-px bg-slate-100 w-full"></div>
+        <div class="space-y-6">
+          <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">lock</span>
+            Security
+          </h2>
+          <div class="space-y-4 max-w-lg">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-2" for="current-password">현재 비밀번호</label>
+              <input
+                class="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-primary focus:ring-primary focus:ring-1 transition-shadow duration-200 placeholder:text-slate-400 outline-none"
+                id="current-password" name="current-password" placeholder="••••••••" type="password" />
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2" for="new-password">새 비밀번호</label>
+                <input
+                  class="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-primary focus:ring-primary focus:ring-1 transition-shadow duration-200 placeholder:text-slate-400 outline-none"
+                  id="new-password" name="new-password" placeholder="New password" type="password" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2" for="confirm-password">새 비밀번호 확인</label>
+                <input
+                  class="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-primary focus:ring-primary focus:ring-1 transition-shadow duration-200 placeholder:text-slate-400 outline-none"
+                  id="confirm-password" name="confirm-password" placeholder="Confirm password" type="password" />
+              </div>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Password must be at least 8 characters long and include numbers and special characters.
+            </p>
+          </div>
+        </div> -->
+        <div class="pt-8 flex items-center justify-between border-t border-slate-100 mt-8">
+          <button
+            class="px-6 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 hover:text-slate-900 transition-colors text-sm tracking-wide"
+            type="button" onclick="history.back()">
+            Cancel
+          </button>
+          <button
+            class="px-8 py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all text-sm tracking-wide"
+            type="submit">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+  <app-footer></app-footer>>
+  <script src="/js/edit-profile/edit-profile.js"></script>
+</body>
+
+</html>
