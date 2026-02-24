@@ -127,32 +127,88 @@ function setCurrentMonth() {
   }
 
   function tierMeta(tierText) {
-    const t = String(tierText || "").toLowerCase();
+  const t = String(tierText || "").toLowerCase();
 
-
-    if (t.includes("diamond")) {
-      return { dot: "bg-primary", text: "text-slate-700", tierLabel: tierText || "Diamond" };
-    }
-    if (t.includes("gold")) {
-      return { dot: "bg-tier-gold", text: "text-slate-700", tierLabel: tierText || "Gold" };
-    }
-    if (t.includes("silver")) {
-      return { dot: "bg-tier-silver", text: "text-slate-700", tierLabel: tierText || "Silver" };
-    }
-    if (t.includes("bronze")) {
-      return { dot: "bg-tier-bronze", text: "text-slate-700", tierLabel: tierText || "Bronze" };
-    }
-    if (t.includes("platinum")) {
-  return { dot: "bg-cyan-500", text: "text-slate-700", tierLabel: tierText };
-}
-if (t.includes("ruby")) {
-  return { dot: "bg-red-500", text: "text-slate-700", tierLabel: tierText };
-}
-if (t.includes("master")) {
-  return { dot: "bg-purple-600", text: "text-slate-700", tierLabel: tierText };
-}
-    return { dot: "bg-slate-300", text: "text-slate-700", tierLabel: tierText || "Member" };
+  if (t.includes("diamond")) {
+    return {
+      dot: "bg-cyan-500",
+      text: "text-cyan-600",
+      tierLabel: tierText || "Diamond",
+      badge: "from-cyan-300 via-cyan-500 to-cyan-700",
+      bar: "bg-cyan-500",
+      star: "text-cyan-500",
+    };
   }
+  if (t.includes("platinum")) {
+    return {
+      dot: "bg-sky-500",
+      text: "text-sky-600",
+      tierLabel: tierText || "Platinum",
+      badge: "from-sky-300 via-sky-500 to-sky-700",
+      bar: "bg-sky-500",
+      star: "text-sky-500",
+    };
+  }
+  if (t.includes("gold")) {
+    return {
+      dot: "bg-yellow-500",
+      text: "text-yellow-600",
+      tierLabel: tierText || "Gold",
+      badge: "from-yellow-300 via-yellow-500 to-yellow-700",
+      bar: "bg-yellow-500",
+      star: "text-yellow-500",
+    };
+  }
+  if (t.includes("silver")) {
+    return {
+      dot: "bg-slate-500",
+      text: "text-slate-600",
+      tierLabel: tierText || "Silver",
+      badge: "from-slate-300 via-slate-500 to-slate-700",
+      bar: "bg-slate-500",
+      star: "text-slate-500",
+    };
+  }
+  if (t.includes("bronze")) {
+    return {
+      dot: "bg-orange-500",
+      text: "text-orange-600",
+      tierLabel: tierText || "Bronze",
+      badge: "from-orange-300 via-orange-500 to-orange-700",
+      bar: "bg-orange-500",
+      star: "text-orange-500",
+    };
+  }
+  if (t.includes("ruby")) {
+    return {
+      dot: "bg-red-500",
+      text: "text-red-600",
+      tierLabel: tierText || "Ruby",
+      badge: "from-red-300 via-red-500 to-red-700",
+      bar: "bg-red-500",
+      star: "text-red-500",
+    };
+  }
+  if (t.includes("master")) {
+    return {
+      dot: "bg-purple-600",
+      text: "text-purple-700",
+      tierLabel: tierText || "Master",
+      badge: "from-purple-500 to-purple-700",
+      bar: "bg-purple-600",
+      star: "text-purple-600",
+    };
+  }
+
+  return {
+    dot: "bg-gray-400",
+    text: "text-gray-600",
+    tierLabel: tierText || "Unrated",
+    badge: "from-gray-400 to-gray-600",
+    bar: "bg-gray-400",
+    star: "text-gray-400",
+  };
+}
 
   function guessStreak(member) {
    
@@ -165,16 +221,14 @@ if (t.includes("master")) {
 
  function badgeGradientByTier(tierText) {
   const t = tierText.toLowerCase();
-
-  if (t.includes("diamond")) return "bg-gradient-to-br from-cyan-400 to-cyan-600";
-  if (t.includes("platinum")) return "bg-gradient-to-br from-sky-400 to-sky-600";
-  if (t.includes("gold")) return "bg-gradient-to-br from-yellow-400 to-yellow-600";
-  if (t.includes("silver")) return "bg-gradient-to-br from-slate-400 to-slate-600";
-  if (t.includes("bronze")) return "bg-gradient-to-br from-orange-400 to-orange-600";
-  if (t.includes("ruby")) return "bg-gradient-to-br from-red-400 to-red-600";
-  if (t.includes("master")) return "bg-gradient-to-br from-purple-500 to-purple-700";
-
-  return "bg-gradient-to-br from-gray-400 to-gray-600";
+  if (t.includes("diamond")) return "from-cyan-400 to-cyan-600";
+  if (t.includes("platinum")) return "from-sky-400 to-sky-600";
+  if (t.includes("gold")) return "from-yellow-400 to-yellow-600";
+  if (t.includes("silver")) return "from-slate-400 to-slate-600";
+  if (t.includes("bronze")) return "from-orange-400 to-orange-600";
+  if (t.includes("ruby")) return "from-red-400 to-red-600";
+  if (t.includes("master")) return "from-purple-500 to-purple-700";
+  return "from-gray-400 to-gray-600";
 }
 function tierLevelRoman(tierText) {
   const t = String(tierText || "").trim();
@@ -204,15 +258,16 @@ function tierLevelRoman(tierText) {
   setText("p1-tier", m1.tierLabel);
   setText("p2-tier", m2.tierLabel);
   setText("p3-tier", m3.tierLabel);
-
+  
+setText("p1-rank", tierLevelRoman(first?.tier));
+setText("p2-rank", tierLevelRoman(second?.tier));
+setText("p3-rank", tierLevelRoman(third?.tier));
   // ✅ 색상 변경 (클래스 교체)
   const p1 = document.getElementById("p1-tier");
   const p2 = document.getElementById("p2-tier");
   const p3 = document.getElementById("p3-tier");
 
-setText("p1-rank", tierLevelRoman(first?.tier));
-setText("p2-rank", tierLevelRoman(second?.tier));
-setText("p3-rank", tierLevelRoman(third?.tier));
+
 
   if (p1) p1.className = `text-sm font-black uppercase tracking-widest mt-1 ${m1.text}`;
   if (p2) p2.className = `text-xs font-bold uppercase tracking-wider mt-1 ${m2.text}`;
@@ -223,10 +278,45 @@ const b1 = document.getElementById("p1-badge");
 const b2 = document.getElementById("p2-badge");
 const b3 = document.getElementById("p3-badge");
 
-if (b1) b1.className = `badge-polygon badge-polygon-lg shadow-xl flex items-center justify-center ${badgeGradientByTier(m1.tierLabel)}`;
-if (b2) b2.className = `badge-polygon shadow-lg flex items-center justify-center ${badgeGradientByTier(m2.tierLabel)}`;
-if (b3) b3.className = `badge-polygon shadow-lg flex items-center justify-center ${badgeGradientByTier(m3.tierLabel)}`;
+if (b1) b1.className = `badge-polygon badge-polygon-lg shadow-xl flex items-center justify-center bg-gradient-to-br ${badgeGradientByTier(m1.tierLabel)}`;
+if (b2) b2.className = `badge-polygon w-14 h-16 shadow-lg flex items-center justify-center bg-gradient-to-br ${badgeGradientByTier(m2.tierLabel)}`;
+if (b3) b3.className = `badge-polygon w-14 h-16 shadow-lg flex items-center justify-center bg-gradient-to-br ${badgeGradientByTier(m3.tierLabel)}`;
 
+// ✅ 1등 별표 색 (HTML에 id="p1-star" 있어야 함)
+const star = document.getElementById("p1-star");
+if (star) {
+  // 기존 클래스 유지하면서 text-색만 바꾸기 어려우니 통째로 세팅
+  let starColor = "text-cyan-500";
+  const t = m1.tierLabel.toLowerCase();
+  if (t.includes("gold")) starColor = "text-yellow-500";
+  else if (t.includes("silver")) starColor = "text-slate-500";
+  else if (t.includes("bronze")) starColor = "text-orange-500";
+  else if (t.includes("platinum")) starColor = "text-sky-500";
+  else if (t.includes("ruby")) starColor = "text-red-500";
+  else if (t.includes("master")) starColor = "text-purple-600";
+
+  star.className = `material-symbols-outlined ${starColor} drop-shadow-sm text-2xl bg-white rounded-full p-0.5`;
+  star.style.fontVariationSettings = "'FILL' 1";
+}
+
+// ✅ 2/3등 attendance 막대 색 (1등은 그대로 두고 싶다 했으니 p1-bar는 건드리지 않음)
+const p2bar = document.getElementById("p2-bar");
+const p3bar = document.getElementById("p3-bar");
+
+function barColorByTierLabel(lbl) {
+  const tt = (lbl || "").toLowerCase();
+  if (tt.includes("gold")) return "bg-yellow-500";
+  if (tt.includes("silver")) return "bg-slate-500";
+  if (tt.includes("bronze")) return "bg-orange-500";
+  if (tt.includes("platinum")) return "bg-sky-500";
+  if (tt.includes("diamond")) return "bg-cyan-500";
+  if (tt.includes("ruby")) return "bg-red-500";
+  if (tt.includes("master")) return "bg-purple-600";
+  return "bg-gray-400";
+}
+
+if (p2bar) p2bar.className = `h-full rounded-full ${barColorByTierLabel(m2.tierLabel)}`;
+if (p3bar) p3bar.className = `h-full rounded-full ${barColorByTierLabel(m3.tierLabel)}`;
   // attendance
   const a1 = parseAttend(first?.participation);
   const a2 = parseAttend(second?.participation);
