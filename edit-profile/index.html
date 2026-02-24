@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html class="light" lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>BINARY - 프로필 편집</title>
+
+  <link rel="stylesheet" href="/css/global.css" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="/js/tailwind-config.js"></script>
+  <script src="/js/components.js" defer></script>
+
+  <style>
+    body {
+      font-family: "Space Grotesk", sans-serif;
+      background-color: #fcfcfc;
+    }
+
+    .glass-card {
+      background: #ffffff;
+      border: 1px solid #f1f5f9;
+    }
+  </style>
+</head>
+
+<body class="text-slate-900 min-h-screen flex flex-col font-display bg-slate-50">
+  <header class="sticky top-0 z-50 w-full border-b border-slate-100 bg-white/90 backdrop-blur-md">
+    <div class="max-w-[1280px] mx-auto px-8 h-20 flex items-center justify-between">
+      <div class="flex items-center w-48">
+        <span class="text-2xl font-bold tracking-tight text-slate-900">BINARY</span>
+      </div>
+      <nav class="hidden md:flex items-center justify-center gap-12 flex-1">
+        <a class="text-base font-medium text-slate-600 hover:text-primary transition-colors relative group" href="#">
+          HOME
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+        </a>
+        <a class="text-base font-medium text-slate-600 hover:text-primary transition-colors relative group" href="#">
+          ABOUT
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+        </a>
+        <a class="text-base font-medium text-slate-600 hover:text-primary transition-colors relative group" href="#">
+          ACTIVITY
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+        </a>
+        <a class="text-base font-medium text-slate-600 hover:text-primary transition-colors relative group" href="#">
+          BOARD
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+        </a>
+        <a class="text-base font-medium text-slate-600 hover:text-primary transition-colors relative group" href="#">
+          RANKING
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+        </a>
+      </nav>
+      <div class="flex items-center justify-end w-48 gap-4">
+        <button
+          class="hidden sm:flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 text-white hover:bg-primary hover:shadow-lg hover:shadow-primary/30 transition-all text-sm font-bold tracking-wide">
+          <span>MYPAGE</span>
+          <span class="text-base">👤</span>
+        </button>
+      </div>
+      <button class="md:hidden text-2xl text-slate-900">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </div>
+  </header>
+  <main class="flex-1 w-full max-w-[800px] mx-auto px-8 py-16 flex flex-col items-center">
+    <div class="glass-card shadow-soft rounded-3xl w-full p-10 md:p-12 animate-fade-in-up">
+      <div class="flex items-center gap-4 mb-10 border-b border-slate-100 pb-6">
+        <a class="p-2 -ml-2 rounded-full hover:bg-slate-50 text-slate-400 hover:text-slate-900 transition-colors"
+          href="#">
+          <span class="material-symbols-outlined block">arrow_back</span>
+        </a>
+        <div>
+          <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Edit Profile</h1>
+          <p class="text-slate-500 mt-1">Update your personal information and security settings.</p>
+        </div>
+      </div>
+      <form class="space-y-8">
+        <div class="space-y-6">
+          <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">person</span>
+            Personal Information
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="col-span-1">
+              <label class="block text-sm font-medium text-slate-700 mb-2" for="name">Full Name</label>
+              <input
+                class="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-primary focus:ring-primary focus:ring-1 transition-shadow duration-200 placeholder:text-slate-400 outline-none"
+                id="name" name="name" placeholder="Enter your full name" type="text" value="Kim Min-jun" />
+            </div>
+            <div class="col-span-1">
+              <label class="block text-sm font-medium text-slate-700 mb-2" for="studentId">Student
+                ID</label>
+              <input
+                class="w-full rounded-xl border-slate-200 bg-slate-100 px-4 py-3 text-slate-500 cursor-not-allowed select-none"
+                disabled="" id="studentId" name="studentId" readonly="" type="text" value="20250142" />
+              <p class="text-xs text-slate-400 mt-1.5 ml-1">Contact admin to change student ID.</p>
+            </div>
+            <div class="col-span-1 md:col-span-2">
+              <label class="block text-sm font-medium text-slate-700 mb-2" for="email">Email
+                Address</label>
+              <input
+                class="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-primary focus:ring-primary focus:ring-1 transition-shadow duration-200 placeholder:text-slate-400 outline-none"
+                id="email" name="email" placeholder="yourname@example.com" type="email" value="minjun.kim@binary.edu" />
+            </div>
+            <div class="col-span-1 md:col-span-2">
+              <label class="block text-sm font-medium text-slate-700 mb-2" for="bio">One-liner Bio</label>
+              <input
+                class="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-primary focus:ring-primary focus:ring-1 transition-shadow duration-200 placeholder:text-slate-400 outline-none"
+                id="bio" name="bio" placeholder="Briefly describe yourself" type="text"
+                value="Passionate about AI Robotics &amp; Full-stack Development." />
+            </div>
+            <div class="col-span-1 md:col-span-2">
+              <label class="block text-sm font-medium text-slate-700 mb-2" for="baekjoonId">Baekjoon
+                ID</label>
+              <div class="relative flex items-center gap-3">
+                <div class="relative w-full">
+                  <input
+                    class="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-primary focus:ring-primary focus:ring-1 transition-shadow duration-200 placeholder:text-slate-400 outline-none pr-12"
+                    id="baekjoonId" name="baekjoonId" placeholder="Your BOJ handle" type="text" value="minjun_k" />
+                  <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                    <span class="text-slate-400 text-xs font-semibold">BOJ</span>
+                  </div>
+                </div>
+                <button
+                  class="shrink-0 rounded-xl border border-primary text-primary hover:bg-primary-light font-bold text-xs px-4 py-3 transition-colors duration-200"
+                  type="button">
+                  Check ID
+                </button>
+              </div>
+              <p class="text-xs text-slate-400 mt-1.5 ml-1">Connect your account for Jandi activity graph.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="h-px bg-slate-100 w-full"></div>
+        <div class="space-y-6">
+          <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">lock</span>
+            Security
+          </h2>
+          <div class="space-y-4 max-w-lg">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-2" for="current-password">Current
+                Password</label>
+              <input
+                class="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-primary focus:ring-primary focus:ring-1 transition-shadow duration-200 placeholder:text-slate-400 outline-none"
+                id="current-password" name="current-password" placeholder="••••••••" type="password" />
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2" for="new-password">New
+                  Password</label>
+                <input
+                  class="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-primary focus:ring-primary focus:ring-1 transition-shadow duration-200 placeholder:text-slate-400 outline-none"
+                  id="new-password" name="new-password" placeholder="New password" type="password" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2" for="confirm-password">Confirm New
+                  Password</label>
+                <input
+                  class="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-primary focus:ring-primary focus:ring-1 transition-shadow duration-200 placeholder:text-slate-400 outline-none"
+                  id="confirm-password" name="confirm-password" placeholder="Confirm password" type="password" />
+              </div>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Password must be at least 8 characters long and include numbers and special characters.
+            </p>
+          </div>
+        </div>
+        <div class="pt-8 flex items-center justify-between border-t border-slate-100 mt-8">
+          <button
+            class="px-6 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 hover:text-slate-900 transition-colors text-sm tracking-wide"
+            type="button">
+            Cancel
+          </button>
+          <button
+            class="px-8 py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all text-sm tracking-wide"
+            type="submit">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+  <footer class="w-full border-t border-slate-100 bg-white py-12 mt-auto">
+    <div class="max-w-[1280px] mx-auto px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex flex-col gap-2">
+        <span class="text-xl font-bold tracking-tight text-slate-900">BINARY</span>
+        <div class="text-slate-400 text-sm">
+          © 2024 BINARY School Computer Club. All rights reserved.
+        </div>
+      </div>
+      <div class="flex items-center gap-8">
+        <a class="text-slate-500 hover:text-primary transition-colors text-sm font-medium" href="#">Instagram</a>
+        <a class="text-slate-500 hover:text-primary transition-colors text-sm font-medium" href="#">Discord</a>
+        <a class="text-slate-500 hover:text-primary transition-colors text-sm font-medium" href="#">GitHub</a>
+        <a class="text-slate-500 hover:text-primary transition-colors text-sm font-medium" href="#">Contact</a>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
