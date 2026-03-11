@@ -15,9 +15,9 @@ const BoardPage = (() => {
     items: (data.question_list || []).map(item => ({
       id: item.id,
       title: item.title,
-      category: item.category,
+      category: (item.category || "").replace("th Gen", "기"),
       date: item.created_at?.slice(0, 10), 
-      author: "익명" // 🔥 아직 author 없으니까 임시
+      author: item.user?.name || "익명"
     }))
   };
 
@@ -61,17 +61,17 @@ const BoardPage = (() => {
   </span>`;
 }
 
-  function renderRows(items) {
-    const tbody = document.getElementById("post-tbody");
-    if (!tbody) return;
+ function renderRows(items, startIndex) {
+  const tbody = document.getElementById("post-tbody");
+  if (!tbody) return;
 
-    tbody.innerHTML = items
-      .map(
-        (p) => `
+  tbody.innerHTML = items
+    .map(
+      (p, i) => `
       <tr class="hover:bg-primary/5 transition-colors group cursor-pointer">
-        <td class="py-4 px-6 text-sm text-gray-400 text-center font-mono">${escapeHTML(
-          p.id
-        )}</td>
+        <td class="py-4 px-6 text-sm text-gray-400 text-center font-mono">
+          ${items.length - (startIndex + i)}
+        </td>
         <td class="py-4 px-6">${badge(p.category)}</td>
         <td class="py-4 px-6">
           <a class="text-sm font-medium text-black group-hover:text-green-700 transition-colors block"
@@ -80,15 +80,14 @@ const BoardPage = (() => {
           </a>
         </td>
         <td class="py-4 px-6 text-sm text-gray-600">${escapeHTML(p.author)}</td>
-        <td class="py-4 px-6 text-sm text-gray-500 text-right font-mono">${escapeHTML(
+        <td class="py-6 px-6 text-sm text-gray-500 text-right font-mono">${escapeHTML(
           p.date
         )}</td>
       </tr>
     `
-      )
-      .join("");
-  }
-
+    )
+    .join("");
+}
   function renderPagination(page, totalPages) {
     const prev = document.getElementById("btn-prev");
     const next = document.getElementById("btn-next");
@@ -206,14 +205,15 @@ const BoardPage = (() => {
     const data = await fetchAllPosts();
     let items = (data.items || []).slice();
 
-  if (state.category === "etc") {
+ if (state.category === "etc") {
   items = items.filter(x => {
-    const c = (x.category || "").toLowerCase();
+    const c = (x.category || "");
     return c !== "11기" && c !== "10기";
   });
-} else if (state.category !== "all") {
+}
+else if (state.category !== "all") {
   items = items.filter(x =>
-    (x.category || "").toLowerCase() === state.category
+    (x.category || "") === state.category
   );
 }
 
@@ -234,7 +234,7 @@ const BoardPage = (() => {
     const start = (page - 1) * PAGE_SIZE;
     const pageItems = items.slice(start, start + PAGE_SIZE);
 
-    renderRows(pageItems);
+    renderRows(pageItems, start);
     renderPagination(page, totalPages);
 
     document.title = `BINARY Board - Page ${page} of ${totalPages}`;

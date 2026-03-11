@@ -16,21 +16,100 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     document.getElementById("post-title").innerText = data.title;
 
-    // 🔥 서버에 author_name이 있다면 이렇게
     document.getElementById("post-author").innerText =
-      data.author_name || "익명";
+      data.user?.name || "익명";
 
-    // 🔥 generation → category
     document.getElementById("post-generation").innerText =
       data.category;
 
-    // 🔥 createdAt → created_at
     const date = new Date(data.created_at);
     document.getElementById("post-date").innerText =
       date.toLocaleDateString();
 
     document.getElementById("post-content").innerHTML =
       data.content;
+
+    const loginUser = JSON.parse(localStorage.getItem("user"));
+
+    console.log("loginUser:", loginUser);
+    console.log("postUser:", data.user);
+
+    if (loginUser && loginUser.name === data.user?.name) {
+      document.getElementById("post-actions").classList.remove("hidden");
+    }
+
+    //삭제버튼
+    const deleteBtn = document.getElementById("delete-btn");
+
+    deleteBtn.addEventListener("click", async () => {
+
+      const confirmDelete = confirm("정말 삭제하시겠습니까?");
+      if (!confirmDelete) return;
+
+      const token = localStorage.getItem("token");
+
+      try {
+        const res = await fetch(
+          `https://backend-production-5853.up.railway.app/api/v1/boards/${id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+
+        if (!res.ok) {
+          alert("삭제 실패");
+          return;
+        }
+
+        alert("삭제되었습니다.");
+
+        window.location.href = "../index.html";
+
+      } catch (err) {
+        console.error(err);
+        alert("삭제 중 오류 발생");
+      }
+
+    });
+
+//이전,다음글 있는지 확인
+const listRes = await fetch("https://backend-production-5853.up.railway.app/api/v1/boards");
+const listData = await listRes.json();
+
+const posts = (listData.question_list || []).sort((a,b)=>b.id-a.id);
+
+const index = posts.findIndex(p => p.id == id);
+
+const prevBtn = document.getElementById("btn-prev");
+const nextBtn = document.getElementById("btn-next");
+
+const prevPost = posts[index + 1];
+const nextPost = posts[index - 1];
+
+//previous버튼
+if (prevPost) {
+  prevBtn.onclick = () => {
+    window.location.href = `./index.html?id=${prevPost.id}`;
+  };
+} else {
+prevBtn.classList.remove("hover:text-gray-900");
+prevBtn.classList.add("text-gray-300");
+prevBtn.onclick = null;
+}
+
+//next버튼
+if (nextPost) {
+  nextBtn.onclick = () => {
+    window.location.href = `./index.html?id=${nextPost.id}`;
+  };
+} else {
+ nextBtn.classList.remove("hover:text-gray-900");
+nextBtn.classList.add("text-gray-300");
+nextBtn.onclick = null;
+}
 
   } catch (err) {
     console.error(err);
