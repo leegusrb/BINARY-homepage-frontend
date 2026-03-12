@@ -189,17 +189,16 @@ function setCurrentMonth() {
       star: "text-red-500",
     };
   }
-  if (t.includes("master")) {
-    return {
-      dot: "bg-purple-600",
-      text: "text-purple-700",
-      tierLabel: tierText || "Master",
-      badge: "from-purple-500 to-purple-700",
-      bar: "bg-purple-600",
-      star: "text-purple-600",
-    };
-  }
-
+if (t.includes("master")) {
+  return {
+    dot: "bg-gradient-to-b from-violet-500 to-sky-500",
+    text: "text-violet-600",
+    tierLabel: tierText || "Master",
+    badge: "bg-gradient-to-b from-violet-500 to-sky-500 text-white",
+    bar: "bg-gradient-to-b from-violet-500 to-sky-500",
+    star: "text-sky-500",
+  };
+}
   return {
     dot: "bg-gray-400",
     text: "text-gray-600",
