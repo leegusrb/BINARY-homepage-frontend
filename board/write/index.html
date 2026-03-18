@@ -232,267 +232,217 @@
   </div>
   <input id="image-input" type="file" accept="image/*" class="hidden" />
   <script>
+const params = new URLSearchParams(window.location.search);
+const postId = params.get("id");
 
-    const params = new URLSearchParams(window.location.search);
-    const postId = params.get("id");
+if (postId) loadPost(postId);
 
+async function loadPost(id) {
+  try {
+    const res = await fetch(`https://backend-production-5853.up.railway.app/api/v1/boards/${id}`);
+    const data = await res.json();
 
-    if (postId) loadPost(postId);
+    document.querySelector(".editor-title").value = data.title;
+    document.getElementById("editor-body").innerHTML = data.content;
 
-    async function loadPost(id) {
-      try {
-        const res = await fetch(`https://backend-production-5853.up.railway.app/api/v1/boards/${id}`);
-        const data = await res.json();
+    const categoryLabel =
+      document.querySelector(".category-dropdown-trigger span.font-semibold");
 
-        document.querySelector(".editor-title").value = data.title;
-        document.getElementById("editor-body").innerHTML = data.content;
+    categoryLabel.innerText = data.category;
 
-        const categoryLabel =
-          document.querySelector(".category-dropdown-trigger span.font-semibold");
+  } catch (err) {
+    console.error(err);
+    alert("게시글 불러오기 실패");
+  }
+}
 
-        categoryLabel.innerText = data.category;
+(() => {
 
-      } catch (err) {
-        console.error(err);
-        alert("게시글 불러오기 실패");
-      }
+  const editor = document.getElementById("editor-body");
+  const charCountEl = document.getElementById("char-count");
+  const imageInput = document.getElementById("image-input");
+  const toolbarButtons = document.querySelectorAll("[data-action]");
+
+  toolbarButtons.forEach(btn =>
+    btn.addEventListener("mousedown", e => e.preventDefault())
+  );
+
+  const focusEditor = () => editor.focus();
+
+  function updateCharCount() {
+    const text = editor.innerText.replace(/\n/g, "");
+    if (charCountEl) charCountEl.textContent = `${text.length} chars`;
+  }
+
+  function isSelectionInsideEditor() {
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return false;
+
+    let node = sel.getRangeAt(0).commonAncestorContainer;
+    if (node.nodeType === 3) node = node.parentNode;
+
+    return editor.contains(node);
+  }
+
+  function updateActiveStates() {
+
+    if (!isSelectionInsideEditor()) {
+      toolbarButtons.forEach(btn => btn.classList.remove("active"));
+      return;
     }
 
-    (() => {
+    const states = {
+      bold: document.queryCommandState("bold"),
+      italic: document.queryCommandState("italic"),
+      underline: document.queryCommandState("underline"),
+      strike: document.queryCommandState("strikeThrough"),
+      ul: document.queryCommandState("insertUnorderedList")
+    };
 
-      const editor = document.getElementById("editor-body");
-      const charCountEl = document.getElementById("char-count");
-      const imageInput = document.getElementById("image-input");
-      const toolbarButtons = document.querySelectorAll("[data-action]");
+    toolbarButtons.forEach(btn => {
+      const action = btn.dataset.action;
+      if (action in states) btn.classList.toggle("active", !!states[action]);
+    });
+  }
 
-      toolbarButtons.forEach(btn =>
-        btn.addEventListener("mousedown", e => e.preventDefault())
-      );
+  function toggleInline(action) {
+    focusEditor();
 
-      const focusEditor = () => editor.focus();
+    const map = {
+      bold: "bold",
+      italic: "italic",
+      underline: "underline",
+      strike: "strikeThrough"
+    };
 
-      function updateCharCount() {
-        const text = editor.innerText.replace(/\n/g, "");
-        if (charCountEl) charCountEl.textContent = `${text.length} chars`;
-      }
+    document.execCommand(map[action]);
+    updateActiveStates();
+    updateCharCount();
+  }
 
-      function isSelectionInsideEditor() {
-        const sel = window.getSelection();
-        if (!sel || sel.rangeCount === 0) return false;
+  function setHeading(level) {
+    focusEditor();
+    document.execCommand("formatBlock", false, `<${level}>`);
+    updateActiveStates();
+    updateCharCount();
+  }
 
-        let node = sel.getRangeAt(0).commonAncestorContainer;
-        if (node.nodeType === 3) node = node.parentNode;
+  function toggleList() {
+    focusEditor();
 
-        return editor.contains(node);
-      }
+    if (editor.innerHTML.trim() === "") {
+      editor.innerHTML = "<ul><li><br></li></ul>";
+    } else {
+      document.execCommand("insertUnorderedList");
+    }
 
-      function updateActiveStates() {
+    updateActiveStates();
+    updateCharCount();
+  }
 
-        if (!isSelectionInsideEditor()) {
-          toolbarButtons.forEach(btn => btn.classList.remove("active"));
-          return;
-        }
+  function insertLink() {
+    focusEditor();
 
-        const states = {
-          bold: document.queryCommandState("bold"),
-          italic: document.queryCommandState("italic"),
-          underline: document.queryCommandState("underline"),
-          strike: document.queryCommandState("strikeThrough"),
-          ul: document.queryCommandState("insertUnorderedList")
-        };
+    const url = prompt("Enter URL (https://...)");
+    if (!url) return;
 
-        toolbarButtons.forEach(btn => {
-          const action = btn.dataset.action;
-          if (action in states) btn.classList.toggle("active", !!states[action]);
-        });
-      }
+    document.execCommand("createLink", false, url);
+  }
 
-      function toggleInline(action) {
+  function insertImageFromFile(file) {
+    const reader = new FileReader();
 
-        focusEditor();
-
-        const map = {
-          bold: "bold",
-          italic: "italic",
-          underline: "underline",
-          strike: "strikeThrough"
-        };
-
-        document.execCommand(map[action]);
-        updateActiveStates();
-        updateCharCount();
-      }
-
-      function setHeading(level) {
-        focusEditor();
-        document.execCommand("formatBlock", false, `<${level}>`);
-        updateActiveStates();
-        updateCharCount();
-      }
-
-      function toggleList() {
-
-        focusEditor();
-
-        if (editor.innerHTML.trim() === "") {
-          editor.innerHTML = "<ul><li><br></li></ul>";
-        } else {
-          document.execCommand("insertUnorderedList");
-        }
-
-        updateActiveStates();
-        updateCharCount();
-      }
-
-      function toggleQuote() {
-        focusEditor();
-        document.execCommand("formatBlock", false, "blockquote");
-        updateCharCount();
-      }
-
-      function toggleCodeBlock() {
-
-        focusEditor();
-
-        const sel = window.getSelection();
-        if (!sel || sel.rangeCount === 0) return;
-
-        const range = sel.getRangeAt(0);
-
-        const pre = document.createElement("pre");
-        const code = document.createElement("code");
-
-        if (range.collapsed) {
-          code.textContent = "\n";
-          pre.appendChild(code);
-          range.insertNode(pre);
-        } else {
-          code.appendChild(range.extractContents());
-          pre.appendChild(code);
-          range.insertNode(pre);
-        }
-
-        updateCharCount();
-      }
-
-      function insertLink() {
-
-        focusEditor();
-
-        const url = prompt("Enter URL (https://...)");
-        if (!url) return;
-
-        document.execCommand("createLink", false, url);
-      }
-
-      function insertImageFromFile(file) {
-
-        const reader = new FileReader();
-
-        reader.onload = () => {
-          focusEditor();
-          document.execCommand("insertImage", false, reader.result);
-          updateCharCount();
-        };
-
-        reader.readAsDataURL(file);
-      }
-
-      function handleAction(action) {
-
-        switch (action) {
-
-          case "bold":
-          case "italic":
-          case "underline":
-          case "strike":
-            return toggleInline(action);
-
-          case "h1":
-          case "h2":
-          case "h3":
-            return setHeading(action);
-
-          case "ul":
-            return toggleList();
-
-          case "quote":
-            return toggleQuote();
-
-          case "codeblock":
-            return toggleCodeBlock();
-
-          case "link":
-            return insertLink();
-
-          case "image":
-            return imageInput.click();
-        }
-      }
-
-      toolbarButtons.forEach(btn =>
-        btn.addEventListener("click", () =>
-          handleAction(btn.dataset.action)
-        )
-      );
-
-      imageInput.addEventListener("change", e => {
-
-        const file = e.target.files?.[0];
-        if (!file) return;
-
-        insertImageFromFile(file);
-        imageInput.value = "";
-      });
-
-      editor.addEventListener("input", updateCharCount);
-      editor.addEventListener("keyup", updateActiveStates);
-      editor.addEventListener("mouseup", updateActiveStates);
-
+    reader.onload = () => {
+      focusEditor();
+      document.execCommand("insertImage", false, reader.result);
       updateCharCount();
+    };
 
-    })();
+    reader.readAsDataURL(file);
+  }
+
+  function handleAction(action) {
+    switch (action) {
+      case "bold":
+      case "italic":
+      case "underline":
+      case "strike":
+        return toggleInline(action);
+
+      case "h1":
+      case "h2":
+      case "h3":
+        return setHeading(action);
+
+      case "ul":
+        return toggleList();
+
+      case "link":
+        return insertLink();
+
+      case "image":
+        return imageInput.click();
+    }
+  }
+
+  toolbarButtons.forEach(btn =>
+    btn.addEventListener("click", () =>
+      handleAction(btn.dataset.action)
+    )
+  );
+
+  imageInput.addEventListener("change", e => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    insertImageFromFile(file);
+    imageInput.value = "";
+  });
+
+  editor.addEventListener("input", updateCharCount);
+  editor.addEventListener("keyup", updateActiveStates);
+  editor.addEventListener("mouseup", updateActiveStates);
+
+  updateCharCount();
+
+})();
 
 
-    //카테고리
-    const categoryTrigger = document.querySelector(".category-dropdown-trigger");
-    const categoryOptions = document.querySelectorAll(".category-option");
-    const categoryLabel =
-      categoryTrigger.querySelector("span.font-semibold");
-
-    categoryOptions.forEach(option => {
-
-      option.addEventListener("click", e => {
-
-//카테고리
+// ===== 카테고리 드롭다운 =====
 const trigger = document.querySelector(".category-dropdown-trigger");
 const menu = document.querySelector(".category-dropdown-menu");
 const categoryOptions = document.querySelectorAll(".category-option");
-const categoryLabel =
-  trigger.querySelector("span.font-semibold");
+const categoryLabel = trigger.querySelector("span.font-semibold");
 
+// 열고 닫기
 trigger.addEventListener("click", (e) => {
   e.stopPropagation();
   menu.classList.toggle("hidden");
 });
 
-        categoryOptions.forEach(opt => {
+// 바깥 클릭 시 닫기
+document.addEventListener("click", (e) => {
+  if (!menu.contains(e.target) && !trigger.contains(e.target)) {
+    menu.classList.add("hidden");
+  }
+});
 
-          opt.classList.remove("selected");
-
-          const check = opt.querySelector(".material-symbols-outlined");
-          if (check) check.remove();
-        });
+// 선택
+categoryOptions.forEach(option => {
+  option.addEventListener("click", e => {
+    e.preventDefault();
 
     categoryOptions.forEach(opt => {
       opt.classList.remove("selected");
 
-        const checkIcon = document.createElement("span");
+      const check = opt.querySelector(".material-symbols-outlined");
+      if (check) check.remove();
+    });
 
-        checkIcon.className =
-          "material-symbols-outlined text-emerald-brand !text-[18px]";
+    option.classList.add("selected");
 
-        checkIcon.innerText = "check_circle";
+    const text = option.querySelector("span").innerText;
+    categoryLabel.innerText = text;
 
     const checkIcon = document.createElement("span");
     checkIcon.className =
@@ -503,90 +453,96 @@ trigger.addEventListener("click", (e) => {
 
     menu.classList.add("hidden");
   });
-
 });
 
-      return fetch(
-        "https://backend-production-5853.up.railway.app/api/v1/boards",
+
+// ===== 게시글 저장 =====
+const publishBtn = document.getElementById("publish-btn");
+
+if (postId) {
+  publishBtn.textContent = "Update";
+}
+
+async function createBoard(data, token) {
+  return fetch(
+    "https://backend-production-5853.up.railway.app/api/v1/boards",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` })
+      },
+      body: JSON.stringify(data)
+    }
+  );
+}
+
+publishBtn.addEventListener("click", async () => {
+
+  const title =
+    document.querySelector(".editor-title").value.trim();
+
+  const content =
+    document.getElementById("editor-body").innerHTML.trim();
+
+  const category =
+    document.querySelector(".category-option.selected span").innerText;
+
+  const token = localStorage.getItem("token");
+
+  if (!title) return alert("제목을 입력해주세요.");
+  if (!content) return alert("내용을 입력해주세요.");
+
+  const postData = { title, content, category };
+
+  try {
+
+    let response;
+
+    if (postId) {
+
+      response = await fetch(
+        `https://backend-production-5853.up.railway.app/api/v1/boards/${postId}`,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            ...(token && { Authorization: `Bearer ${token}` })
+            Authorization: `Bearer ${token}`
           },
-          body: JSON.stringify(data)
+          body: JSON.stringify(postData)
         }
       );
+
+    } else {
+
+      response = await createBoard(postData, token);
+
     }
 
+    if (!response.ok) {
 
-    publishBtn.addEventListener("click", async () => {
+      const errorText = await response.text();
+      throw new Error(errorText);
 
-      const title =
-        document.querySelector(".editor-title").value.trim();
+    }
 
-      const content =
-        document.getElementById("editor-body").innerHTML.trim();
+    alert(
+      postId
+        ? "게시글이 수정되었습니다."
+        : "게시글이 저장되었습니다."
+    );
 
-      const category =
-        document.querySelector(".category-option.selected span").innerText;
+    window.location.href = "/board";
 
-      const token = localStorage.getItem("token");
+  } catch (err) {
 
-      if (!title) return alert("제목을 입력해주세요.");
-      if (!content) return alert("내용을 입력해주세요.");
+    console.error(err);
+    alert("저장 중 오류가 발생했습니다.");
 
-      const postData = { title, content, category };
+  }
 
-      try {
-
-        let response;
-
-        if (postId) {
-
-          response = await fetch(
-            `https://backend-production-5853.up.railway.app/api/v1/boards/${postId}`,
-            {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
-              },
-              body: JSON.stringify(postData)
-            }
-          );
-
-        } else {
-
-          response = await createBoard(postData, token);
-
-        }
-
-        if (!response.ok) {
-
-          const errorText = await response.text();
-          throw new Error(errorText);
-
-        }
-
-        alert(
-          postId
-            ? "게시글이 수정되었습니다."
-            : "게시글이 저장되었습니다."
-        );
-
-        window.location.href = "/board";
-
-      } catch (err) {
-
-        console.error(err);
-        alert("저장 중 오류가 발생했습니다.");
-
-      }
-
-    });
-
-  </script>
+});
+</script>
 </body>
 
 </html>
